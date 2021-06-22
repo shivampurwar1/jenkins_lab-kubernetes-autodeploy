@@ -24,7 +24,12 @@ pipeline {
             }
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com','docker_hub_login') {
+                    withCredentials([usernamePassword( credentialsId: 'docker_hub_login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        usr = USERNAME
+		              	pswd = PASSWORD
+                    }
+                    docker.withRegistry('','docker_hub_login') {
+                        sh "docker login -u ${usr} -p ${pswd}"
                         app.push("${env.BUILD_NUMBER}")
                         app.push("latest")
                     }
