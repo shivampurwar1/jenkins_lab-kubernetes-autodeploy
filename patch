@@ -1,4 +1,13 @@
-Script change:
+Jenkins file changes from:
+
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com','docker_hub_login') {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
+                    }
+		    
+To:
+
                 script {
                     withCredentials([usernamePassword( credentialsId: 'docker_hub_login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                         usr = USERNAME
